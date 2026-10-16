@@ -51,6 +51,7 @@ function Detail() {
           <p className="text-xs tracking-[0.16em] text-citrus uppercase">{PLACE_LABEL[item.home]}</p>
           <h1 className="font-display mt-2 text-5xl leading-none">{item.name}</h1>
           <p className="mt-3 text-base leading-relaxed text-stone">{item.summary}</p>
+          <p className="mt-3 text-base leading-relaxed">{item.detail}</p>
           <div className="mt-4">
             <SaveButton slug={item.slug} saved={saved.has(item.slug)} onToggle={saved.toggle} />
           </div>

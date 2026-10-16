@@ -29,7 +29,7 @@ function Home() {
         <p className="mt-6 text-xs tracking-[0.18em] text-stone uppercase">Mercado en casa</p>
         <h1 className="font-display mt-2 text-5xl leading-none">Guía Fresca</h1>
         <p className="mt-3 max-w-sm text-base leading-relaxed text-stone">
-          Qué va dentro del refrigerador, qué se queda fuera, y cómo se ve cuando ya se puede comer.
+          Qué va dentro del refrigerador, qué se queda fuera, cuántos días dura y cómo se ve cuando ya se puede comer.
         </p>
       </header>
 
