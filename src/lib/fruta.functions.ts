@@ -33,6 +33,8 @@ const FRUIT: Record<string, { api: string; label: string }> = {
   guayaba: { api: "guava", label: "Guayaba" },
   kiwi: { api: "kiwi", label: "Kiwi" },
   arandano: { api: "blueberry", label: "Arándano" },
+  granada: { api: "pomegranate", label: "Granada" },
+  higo: { api: "fig", label: "Higo" },
 };
 
 function num(value: unknown): number | null {
