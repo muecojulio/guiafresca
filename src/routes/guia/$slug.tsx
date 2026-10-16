@@ -42,7 +42,7 @@ function Detail() {
       {item.photo ? (
         <img
           src={item.photo}
-          alt={item.stages ? `${item.name}: firme, listo y para comer pronto` : item.name}
+          alt={item.name}
           className="mt-2 aspect-square w-full object-cover"
         />
       ) : null}
@@ -77,13 +77,10 @@ function Detail() {
 
         <section>
           <h2 className="font-display text-3xl">Cómo se ve</h2>
-          {item.stages ? (
-            <p className="mt-2 text-sm text-stone">En la foto, de izquierda a derecha: todavía firme, listo, y ya conviene comerlo pronto.</p>
-          ) : null}
           <ol className="mt-4 space-y-3">
-            <Stage n="1" title="Todavía no" text={item.unripe} />
-            <Stage n="2" title="Listo" text={item.ripe} />
-            <Stage n="3" title="Pasado" text={item.over} />
+            <Stage n="1" title="Todavía no" text={item.unripe} src={item.early} />
+            <Stage n="2" title="Listo" text={item.ripe} src={item.photo} />
+            <Stage n="3" title="Pasado" text={item.over} src={item.late} />
           </ol>
         </section>
 
@@ -137,13 +134,16 @@ function Detail() {
   );
 }
 
-function Stage({ n, title, text }: { n: string; title: string; text: string }) {
+function Stage({ n, title, text, src }: { n: string; title: string; text: string; src?: string }) {
   return (
-    <li className="flex gap-3">
-      <span className="font-display text-2xl text-citrus">{n}</span>
-      <span>
-        <span className="block text-base">{title}</span>
-        <span className="mt-1 block text-sm leading-relaxed text-stone">{text}</span>
+    <li className="overflow-hidden rounded-card border border-line bg-card">
+      {src ? <img src={src} alt={title} className="aspect-[4/3] w-full object-cover" /> : null}
+      <span className="flex gap-3 px-4 py-3">
+        <span className="font-display text-2xl text-citrus">{n}</span>
+        <span>
+          <span className="block text-base">{title}</span>
+          <span className="mt-1 block text-sm leading-relaxed text-stone">{text}</span>
+        </span>
       </span>
     </li>
   );

@@ -20,6 +20,8 @@ export type Guide = {
   avoid: string[];
   ethylene: Ethylene;
   photo?: string;
+  early?: string;
+  late?: string;
   stages: boolean;
 };
 
@@ -87,6 +89,8 @@ export const GUIDES: Guide[] = [
     ],
     ethylene: "emite",
     photo: "/guia/platano.jpg",
+    early: "/guia/platano-no.jpg",
+    late: "/guia/platano-pasado.jpg",
     stages: true,
   },
   {
@@ -110,6 +114,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No refrigeres el aguacate duro si quieres que madure."],
     ethylene: "emite",
     photo: "/guia/aguacate.jpg",
+    early: "/guia/aguacate-no.jpg",
+    late: "/guia/aguacate-pasado.jpg",
     stages: true,
   },
   {
@@ -133,6 +139,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No los dejes en el refrigerador de rutina: se vuelven harinosos."],
     ethylene: "emite",
     photo: "/guia/jitomate.jpg",
+    early: "/guia/jitomate-no.jpg",
+    late: "/guia/jitomate-pasado.jpg",
     stages: true,
   },
   {
@@ -153,6 +161,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No juzgues solo por el rojo de la cáscara."],
     ethylene: "emite",
     photo: "/guia/mango.jpg",
+    early: "/guia/mango-no.jpg",
+    late: "/guia/mango-pasado.jpg",
     stages: true,
   },
   {
@@ -173,6 +183,8 @@ export const GUIDES: Guide[] = [
     avoid: ["El frío antes de tiempo los deja duros por fuera y harinosos por dentro."],
     ethylene: "emite",
     photo: "/guia/durazno.jpg",
+    early: "/guia/durazno-no.jpg",
+    late: "/guia/durazno-pasado.jpg",
     stages: true,
   },
   {
@@ -196,6 +208,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No las guardes en bolsa cerrada sin aire: el moho corre."],
     ethylene: "neutro",
     photo: "/guia/fresa.jpg",
+    early: "/guia/fresa-no.jpg",
+    late: "/guia/fresa-pasado.jpg",
     stages: false,
   },
   {
@@ -216,6 +230,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la dejes al sol ni junto a la cebolla."],
     ethylene: "emite",
     photo: "/guia/manzana.jpg",
+    early: "/guia/manzana-no.jpg",
+    late: "/guia/manzana-pasado.jpg",
     stages: false,
   },
   {
@@ -236,6 +252,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No los encierres húmedos."],
     ethylene: "neutro",
     photo: "/guia/citricos.jpg",
+    early: "/guia/citricos-no.jpg",
+    late: "/guia/citricos-pasado.jpg",
     stages: false,
   },
   {
@@ -256,6 +274,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No las dejes en el frutero de la mesa varios días."],
     ethylene: "sensible",
     photo: "/guia/uva.jpg",
+    early: "/guia/uva-no.jpg",
+    late: "/guia/uva-pasado.jpg",
     stages: false,
   },
   {
@@ -276,6 +296,8 @@ export const GUIDES: Guide[] = [
     avoid: ["Una sandía partida en la mesa pasa la regla de las 2 horas y se tira."],
     ethylene: "neutro",
     photo: "/guia/sandia.jpg",
+    early: "/guia/sandia-no.jpg",
+    late: "/guia/sandia-pasado.jpg",
     stages: false,
   },
   {
@@ -296,6 +318,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No esperes a que se ponga más amarilla para que endulce: eso no pasa en casa."],
     ethylene: "neutro",
     photo: "/guia/pina.jpg",
+    early: "/guia/pina-no.jpg",
+    late: "/guia/pina-pasado.jpg",
     stages: false,
   },
   {
@@ -316,6 +340,8 @@ export const GUIDES: Guide[] = [
     avoid: ["La superficie de un melón se lava antes de cortar: la cáscara trae tierra."],
     ethylene: "emite",
     photo: "/guia/melon.jpg",
+    early: "/guia/melon-no.jpg",
+    late: "/guia/melon-pasado.jpg",
     stages: false,
   },
   {
@@ -336,6 +362,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la guardes junto a plátanos si aún está verde y no quieres apurarla."],
     ethylene: "emite",
     photo: "/guia/papaya.jpg",
+    early: "/guia/papaya-no.jpg",
+    late: "/guia/papaya-pasado.jpg",
     stages: false,
   },
   {
@@ -356,6 +384,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la refrigeres mientras el cuello esté de piedra."],
     ethylene: "emite",
     photo: "/guia/pera.jpg",
+    early: "/guia/pera-no.jpg",
+    late: "/guia/pera-pasado.jpg",
     stages: false,
   },
   {
@@ -376,6 +406,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la encierres con manzanas si aún está verde, salvo que quieras apurarla."],
     ethylene: "emite",
     photo: "/guia/guayaba.jpg",
+    early: "/guia/guayaba-no.jpg",
+    late: "/guia/guayaba-pasado.jpg",
     stages: false,
   },
   {
@@ -396,6 +428,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo cortes antes de que ceda: no madura en el plato."],
     ethylene: "sensible",
     photo: "/guia/kiwi.jpg",
+    early: "/guia/kiwi-no.jpg",
+    late: "/guia/kiwi-pasado.jpg",
     stages: false,
   },
   {
@@ -416,6 +450,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No las laves al guardarlas."],
     ethylene: "neutro",
     photo: "/guia/arandano.jpg",
+    early: "/guia/arandano-no.jpg",
+    late: "/guia/arandano-pasado.jpg",
     stages: false,
   },
   {
@@ -436,6 +472,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la dejes en la mesa de una reunión larga."],
     ethylene: "neutro",
     photo: "/guia/fruta-partida.jpg",
+    early: "/guia/fruta-partida-no.jpg",
+    late: "/guia/fruta-partida-pasado.jpg",
     stages: false,
   },
   {
@@ -456,6 +494,8 @@ export const GUIDES: Guide[] = [
     avoid: ["El etileno de manzana, plátano y jitomate la oxida antes."],
     ethylene: "sensible",
     photo: "/guia/lechuga.jpg",
+    early: "/guia/lechuga-no.jpg",
+    late: "/guia/lechuga-pasado.jpg",
     stages: false,
   },
   {
@@ -476,6 +516,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la dejes junto a frutas que maduran."],
     ethylene: "sensible",
     photo: "/guia/espinaca.jpg",
+    early: "/guia/espinaca-no.jpg",
+    late: "/guia/espinaca-pasado.jpg",
     stages: false,
   },
   {
@@ -499,6 +541,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No metas la albahaca al refrigerador si puedes tenerla en la mesa."],
     ethylene: "sensible",
     photo: "/guia/cilantro.jpg",
+    early: "/guia/cilantro-no.jpg",
+    late: "/guia/cilantro-pasado.jpg",
     stages: false,
   },
   {
@@ -519,6 +563,8 @@ export const GUIDES: Guide[] = [
     avoid: ["Junto a las papas: la cebolla las hace brotar y ellas humedecen la cebolla."],
     ethylene: "neutro",
     photo: "/guia/cebolla.jpg",
+    early: "/guia/cebolla-no.jpg",
+    late: "/guia/cebolla-pasado.jpg",
     stages: false,
   },
   {
@@ -539,6 +585,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo guardes en el refrigerador 'por si acaso'."],
     ethylene: "neutro",
     photo: "/guia/ajo.jpg",
+    early: "/guia/ajo-no.jpg",
+    late: "/guia/ajo-pasado.jpg",
     stages: false,
   },
   {
@@ -559,6 +607,8 @@ export const GUIDES: Guide[] = [
     avoid: ["Nunca refrigeres papa cruda para 'que dure'."],
     ethylene: "neutro",
     photo: "/guia/papa.jpg",
+    early: "/guia/papa-no.jpg",
+    late: "/guia/papa-pasado.jpg",
     stages: false,
   },
   {
@@ -579,6 +629,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo metas al cajón de las verduras crudo."],
     ethylene: "neutro",
     photo: "/guia/camote.jpg",
+    early: "/guia/camote-no.jpg",
+    late: "/guia/camote-pasado.jpg",
     stages: false,
   },
   {
@@ -599,6 +651,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No las dejes en la bolsa del súper sudada."],
     ethylene: "sensible",
     photo: "/guia/zanahoria.jpg",
+    early: "/guia/zanahoria-no.jpg",
+    late: "/guia/zanahoria-pasado.jpg",
     stages: false,
   },
   {
@@ -619,6 +673,8 @@ export const GUIDES: Guide[] = [
     avoid: ["El etileno lo amarillea."],
     ethylene: "sensible",
     photo: "/guia/pepino.jpg",
+    early: "/guia/pepino-no.jpg",
+    late: "/guia/pepino-pasado.jpg",
     stages: false,
   },
   {
@@ -639,6 +695,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo guardes mojado."],
     ethylene: "sensible",
     photo: "/guia/pimiento.jpg",
+    early: "/guia/pimiento-no.jpg",
+    late: "/guia/pimiento-pasado.jpg",
     stages: false,
   },
   {
@@ -659,6 +717,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No los laves en racimo para guardarlos."],
     ethylene: "sensible",
     photo: "/guia/chile.jpg",
+    early: "/guia/chile-no.jpg",
+    late: "/guia/chile-pasado.jpg",
     stages: false,
   },
   {
@@ -679,6 +739,8 @@ export const GUIDES: Guide[] = [
     avoid: ["Manzanas al lado lo amarillean."],
     ethylene: "sensible",
     photo: "/guia/brocoli.jpg",
+    early: "/guia/brocoli-no.jpg",
+    late: "/guia/brocoli-pasado.jpg",
     stages: false,
   },
   {
@@ -699,6 +761,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No los laves para guardarlos. Límpialos con un paño al usarlos."],
     ethylene: "neutro",
     photo: "/guia/champinon.jpg",
+    early: "/guia/champinon-no.jpg",
+    late: "/guia/champinon-pasado.jpg",
     stages: false,
   },
   {
@@ -719,6 +783,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo dejes en la bolsa del mercado a temperatura ambiente."],
     ethylene: "neutro",
     photo: "/guia/elote.jpg",
+    early: "/guia/elote-no.jpg",
+    late: "/guia/elote-pasado.jpg",
     stages: false,
   },
   {
@@ -739,6 +805,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la congeles en ruedas crudas si la quieres salteada: suelta agua."],
     ethylene: "sensible",
     photo: "/guia/calabacita.jpg",
+    early: "/guia/calabacita-no.jpg",
+    late: "/guia/calabacita-pasado.jpg",
     stages: false,
   },
   {
@@ -759,6 +827,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo dejes en la ventana húmeda."],
     ethylene: "neutro",
     photo: "/guia/jengibre.jpg",
+    early: "/guia/jengibre-no.jpg",
+    late: "/guia/jengibre-pasado.jpg",
     stages: false,
   },
   {
@@ -779,6 +849,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No dejes la olla en la estufa toda la noche."],
     ethylene: "neutro",
     photo: "/guia/verdura-cocida.jpg",
+    early: "/guia/verdura-cocida-no.jpg",
+    late: "/guia/verdura-cocida-pasado.jpg",
     stages: false,
   },
   {
@@ -802,7 +874,9 @@ export const GUIDES: Guide[] = [
     ],
     avoid: ["No la dejes en la mesa del desayuno 'un rato' repetido."],
     ethylene: "neutro",
-    photo: "/guia/lacteos.jpg",
+    photo: "/guia/leche.jpg",
+    early: "/guia/leche-no.jpg",
+    late: "/guia/leche-pasado.jpg",
     stages: false,
   },
   {
@@ -822,7 +896,9 @@ export const GUIDES: Guide[] = [
     longer: ["Cuchara limpia cada vez. No regreses la que ya tocó la comida."],
     avoid: ["No la dejes en la mesa de los tacos."],
     ethylene: "neutro",
-    photo: "/guia/lacteos.jpg",
+    photo: "/guia/crema.jpg",
+    early: "/guia/crema-no.jpg",
+    late: "/guia/crema-pasado.jpg",
     stages: false,
   },
   {
@@ -843,6 +919,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No comas del vaso y lo regreses al refrigerador días después."],
     ethylene: "neutro",
     photo: "/guia/yogur.jpg",
+    early: "/guia/yogur-no.jpg",
+    late: "/guia/yogur-pasado.jpg",
     stages: false,
   },
   {
@@ -863,6 +941,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No lo dejes en el mostrador para que 'se temple' más de un rato."],
     ethylene: "neutro",
     photo: "/guia/queso-fresco.jpg",
+    early: "/guia/queso-fresco-no.jpg",
+    late: "/guia/queso-fresco-pasado.jpg",
     stages: false,
   },
   {
@@ -883,6 +963,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No uses el mismo cuchillo del moho en el resto."],
     ethylene: "neutro",
     photo: "/guia/queso-maduro.jpg",
+    early: "/guia/queso-maduro-no.jpg",
+    late: "/guia/queso-maduro-pasado.jpg",
     stages: false,
   },
   {
@@ -903,6 +985,8 @@ export const GUIDES: Guide[] = [
     avoid: ["No la dejes al sol de la ventana."],
     ethylene: "neutro",
     photo: "/guia/mantequilla.jpg",
+    early: "/guia/mantequilla-no.jpg",
+    late: "/guia/mantequilla-pasado.jpg",
     stages: false,
   },
   {
@@ -926,6 +1010,8 @@ export const GUIDES: Guide[] = [
     avoid: ["Un huevo refrigerado que pasó horas fuera ya no se guarda 'para después'."],
     ethylene: "neutro",
     photo: "/guia/huevo.jpg",
+    early: "/guia/huevo-no.jpg",
+    late: "/guia/huevo-pasado.jpg",
     stages: false,
   },
 ];
