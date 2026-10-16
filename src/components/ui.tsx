@@ -1,69 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
-import { useEffect, useState } from "react";
 import { GROUPS, PLACE_LABEL, type Guide, type GroupId, type HomePlace } from "@/lib/catalog";
-import { applyNight, readFlag, readSaved, toggleSaved, writeFlag, KEYS } from "@/lib/prefs";
 
-export function usePrefs() {
-  const [night, setNight] = useState(false);
-  const [heat, setHeat] = useState(false);
-  const [ethylene, setEthylene] = useState(true);
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    const sync = () => {
-      const nextNight = readFlag(KEYS.night);
-      setNight(nextNight);
-      setHeat(readFlag(KEYS.heat));
-      const stored = localStorage.getItem(KEYS.ethylene);
-      setEthylene(stored === null ? true : stored === "1");
-      applyNight(nextNight);
-      setReady(true);
-    };
-    sync();
-    window.addEventListener("guiafresca-prefs", sync);
-    return () => window.removeEventListener("guiafresca-prefs", sync);
-  }, []);
-
-  return {
-    ready,
-    night,
-    heat,
-    ethylene,
-    setNight: (on: boolean) => {
-      writeFlag(KEYS.night, on);
-      applyNight(on);
-      setNight(on);
-    },
-    setHeat: (on: boolean) => {
-      writeFlag(KEYS.heat, on);
-      setHeat(on);
-    },
-    setEthylene: (on: boolean) => {
-      writeFlag(KEYS.ethylene, on);
-      setEthylene(on);
-    },
-  };
-}
-
-export function useSavedSet() {
-  const [ids, setIds] = useState<string[]>([]);
-  useEffect(() => {
-    const sync = () => setIds(readSaved());
-    sync();
-    window.addEventListener("guiafresca-saved", sync);
-    window.addEventListener("storage", sync);
-    return () => {
-      window.removeEventListener("guiafresca-saved", sync);
-      window.removeEventListener("storage", sync);
-    };
-  }, []);
-  return {
-    ids,
-    has: (slug: string) => ids.includes(slug),
-    toggle: (slug: string) => setIds(toggleSaved(slug)),
-  };
-}
+/**
+ * Shared UI primitives. Components only — the `usePrefs` / `useSavedSet` hooks
+ * live in `@/lib/use-prefs` and `@/lib/use-saved-set` so this file stays
+ * eligible for React fast refresh.
+ */
 
 export function SwitchRow({
   on,

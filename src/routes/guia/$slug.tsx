@@ -4,7 +4,9 @@ import { ChevronLeft } from "lucide-react";
 import { getGuide, PLACE_LABEL, SOURCES } from "@/lib/catalog";
 import { nutricionDe, type Nutricion } from "@/lib/fruta.functions";
 import { Shell } from "@/components/shell";
-import { SaveButton, usePrefs, useSavedSet } from "@/components/ui";
+import { SaveButton } from "@/components/ui";
+import { usePrefs } from "@/lib/use-prefs";
+import { useSavedSet } from "@/lib/use-saved-set";
 
 export const Route = createFileRoute("/guia/$slug")({ component: Detail });
 

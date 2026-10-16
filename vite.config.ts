@@ -160,6 +160,27 @@ export default defineConfig(({ command, isPreview }) => ({
     strictPort: true,
   },
   resolve: { tsconfigPaths: true },
+  build: {
+    rollupOptions: {
+      /**
+       * Dependencies that ship `"use client"` at the top of their published ESM
+       * (`@tanstack/react-router` alone adds ~20 modules) make Rolldown print
+       * one "module level directive may not be preserved" warning per file on
+       * every build. The directive is only a hint to the *consumer's* bundler,
+       * so nothing here is actionable — and 20 identical lines bury the
+       * warnings that are.
+       *
+       * The filter is deliberately narrow: only that one code, only from
+       * `node_modules`. Every other log — and any directive warning in the
+       * app's own source — still reaches the default handler.
+       */
+      onLog(level, log, defaultHandler) {
+        const origin = log.id ?? log.loc?.file ?? log.message;
+        if (log.code === "MODULE_LEVEL_DIRECTIVE" && origin.includes("node_modules")) return;
+        defaultHandler(level, log);
+      },
+    },
+  },
   plugins: [
     pgliteBootstrapPlugin(),
     // Before tanstackStart so /auth/popup never falls through to the SPA.

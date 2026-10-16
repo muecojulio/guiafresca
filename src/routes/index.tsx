@@ -6,7 +6,8 @@ import { climaDe, type Clima } from "@/lib/clima.functions";
 import { miCiudad } from "@/lib/location.functions";
 import { readCity, writeCity } from "@/lib/prefs";
 import { Shell, Mark } from "@/components/shell";
-import { GroupFilters, GuideCard, PlaceFilters, usePrefs } from "@/components/ui";
+import { GroupFilters, GuideCard, PlaceFilters } from "@/components/ui";
+import { usePrefs } from "@/lib/use-prefs";
 
 export const Route = createFileRoute("/")({ component: Home });
 
