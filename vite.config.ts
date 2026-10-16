@@ -171,6 +171,14 @@ export default defineConfig(({ command, isPreview }) => ({
       ? [
           nitro({
             preset: "vercel",
+            // The app declares Node 24 in package.json. Nitro otherwise copies
+            // whatever Node happens to run the build (often 22) into the
+            // Vercel function, and the deploy is rejected for the mismatch.
+            vercel: {
+              functions: {
+                runtime: "nodejs24.x",
+              },
+            },
             // Auto-registers server/middleware/* (the PWA install page +
             // manifest + head-tag middleware). Nitro v3 defaults serverDir to
             // false, so removing this silently unwires /?install=1 on deploys.
