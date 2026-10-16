@@ -89,9 +89,13 @@ function wrapHtmlResponses(middlewares, cwd) {
     const rawUrl = req.url ?? "";
     const pathOnly = rawUrl.split("?", 1)[0] ?? "";
     const method = (req.method ?? "GET").toUpperCase();
+    // acceptsHtml, not a raw "text/html" substring: the deployed
+    // middleware (server/middleware/grok-pwa.ts) does not filter on
+    // Accept at all, and link scrapers — the og tags' whole audience —
+    // routinely send */* or nothing. Dev must not skip them.
     const looksLikeDocument =
       method === "GET" &&
-      String(req.headers.accept ?? "").includes("text/html") &&
+      acceptsHtml(req.headers.accept) &&
       !isInstallQuery(rawUrl) &&
       isDocumentPath(pathOnly);
     if (!looksLikeDocument) {
