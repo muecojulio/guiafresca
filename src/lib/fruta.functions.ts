@@ -1,4 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
+import fruityvice from "@/lib/data/fruityvice.json";
+import { cacheKey, cached } from "@/lib/cache.server";
 
 export type Nutricion = {
   label: string;
@@ -7,10 +9,9 @@ export type Nutricion = {
   carbohydrates: number;
   protein: number;
   fat: number;
+  source: "api" | "local";
 };
 
-type CacheEntry = { at: number; value: Nutricion };
-const cache = new Map<string, CacheEntry>();
 const TTL_MS = 24 * 60 * 60 * 1000;
 
 // Nombres públicos de https://github.com/fruityvice/fruityvice-api (sin llave).
@@ -37,8 +38,52 @@ const FRUIT: Record<string, { api: string; label: string }> = {
   higo: { api: "fig", label: "Higo" },
 };
 
+// Respaldo sin red: el dataset público de Fruityvice, copiado de
+// github.com/alessandra-torelli/fruitpedia (ver src/lib/data/README.md).
+// Cubre los 19 nombres api de FRUIT, así que la ficha de nutrición
+// sigue disponible aunque Fruityvice esté caído.
+type LocalNutrition = {
+  carbohydrates: number;
+  protein: number;
+  fat: number;
+  calories: number;
+  sugar: number;
+};
+const LOCAL: Record<string, LocalNutrition> = Object.fromEntries(
+  fruityvice.map((row) => [row.name.toLocaleLowerCase("en"), row.nutritions]),
+);
+
 function num(value: unknown): number | null {
   return typeof value === "number" && Number.isFinite(value) ? value : null;
+}
+
+type NutritionNumbers = {
+  calories: number;
+  sugar: number;
+  carbohydrates: number;
+  protein: number;
+  fat: number;
+};
+
+async function fetchNutricion(api: string): Promise<NutritionNumbers | null> {
+  const url = new URL(`https://www.fruityvice.com/api/fruit/${api}`);
+  const response = await fetch(url, {
+    headers: { Accept: "application/json", "User-Agent": "GuiaFresca/1.0 (guia de conservacion en el hogar)" },
+    signal: AbortSignal.timeout(8000),
+    redirect: "error",
+  });
+  if (!response.ok) return null;
+  const body = (await response.json()) as { nutritions?: Record<string, unknown> };
+  const n = body.nutritions ?? {};
+  const calories = num(n.calories);
+  const sugar = num(n.sugar);
+  const carbohydrates = num(n.carbohydrates);
+  const protein = num(n.protein);
+  const fat = num(n.fat);
+  if (calories === null || sugar === null || carbohydrates === null || protein === null || fat === null) {
+    return null;
+  }
+  return { calories, sugar, carbohydrates, protein, fat };
 }
 
 export const nutricionDe = createServerFn({ method: "GET" })
@@ -46,27 +91,18 @@ export const nutricionDe = createServerFn({ method: "GET" })
   .handler(async ({ data: slug }) => {
     const fruit = FRUIT[slug];
     if (!fruit) return null;
-    const hit = cache.get(slug);
-    if (hit && Date.now() - hit.at < TTL_MS) return hit.value;
 
-    const url = new URL(`https://www.fruityvice.com/api/fruit/${fruit.api}`);
-    const response = await fetch(url, {
-      headers: { Accept: "application/json", "User-Agent": "GuiaFresca/1.0 (guia de conservacion en el hogar)" },
-      signal: AbortSignal.timeout(8000),
-      redirect: "error",
+    const { value } = await cached(cacheKey("fruta", slug), TTL_MS, async () => {
+      try {
+        const live = await fetchNutricion(fruit.api);
+        if (live) return { ...live, source: "api" as const, label: fruit.label };
+      } catch {
+        // Fruityvice caído o lento → respaldo local, más abajo.
+      }
+      const local = LOCAL[fruit.api];
+      return local
+        ? { ...local, source: "local" as const, label: fruit.label }
+        : null;
     });
-    if (!response.ok) return null;
-    const body = (await response.json()) as { nutritions?: Record<string, unknown> };
-    const n = body.nutritions ?? {};
-    const calories = num(n.calories);
-    const sugar = num(n.sugar);
-    const carbohydrates = num(n.carbohydrates);
-    const protein = num(n.protein);
-    const fat = num(n.fat);
-    if (calories === null || sugar === null || carbohydrates === null || protein === null || fat === null) {
-      return null;
-    }
-    const value: Nutricion = { label: fruit.label, calories, sugar, carbohydrates, protein, fat };
-    cache.set(slug, { at: Date.now(), value });
     return value;
   });

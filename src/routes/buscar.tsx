@@ -2,6 +2,10 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getGuide, searchGuides } from "@/lib/catalog";
 import { buscarEnVivo, type LiveProduct } from "@/lib/products.functions";
+import {
+  conservacionDe,
+  type Conservacion,
+} from "@/lib/conservacion.functions";
 import { Shell } from "@/components/shell";
 import { GuideCard, usePrefs } from "@/components/ui";
 
@@ -20,6 +24,32 @@ function Buscar() {
   const [live, setLive] = useState<LiveProduct[]>([]);
   const [state, setState] = useState<"idle" | "loading" | "ok" | "error">("idle");
   const [note, setNote] = useState("");
+  const [conservas, setConservas] = useState<Record<string, Conservacion | null>>({});
+
+  // Productos de tienda sin ficha en la guía: USDA FoodKeeper,
+  // datos locales sin red ni llave.
+  useEffect(() => {
+    const needs = live.filter((product) => !product.guideSlug).slice(0, 6);
+    if (needs.length === 0) return;
+    let cancel = false;
+    Promise.all(
+      needs.map((product) =>
+        conservacionDe({ data: product.name }).catch(() => null),
+      ),
+    ).then((rows) => {
+      if (cancel) return;
+      setConservas((prev) => {
+        const next = { ...prev };
+        needs.forEach((product, i) => {
+          next[product.code] = rows[i];
+        });
+        return next;
+      });
+    });
+    return () => {
+      cancel = true;
+    };
+  }, [live]);
 
   useEffect(() => {
     setDraft(q);
@@ -93,6 +123,7 @@ function Buscar() {
         <ul className="mt-3 space-y-3">
           {live.map((product) => {
             const guide = product.guideSlug ? getGuide(product.guideSlug) : undefined;
+            const conserva = conservas[product.code];
             return (
               <li key={product.code} className="flex gap-3 rounded-card border border-line bg-card p-3">
                 {product.image ? (
@@ -110,6 +141,12 @@ function Buscar() {
                   ) : (
                     <p className="mt-1 text-sm text-stone">Sin ficha en la guía. Si es perecedero, al refrigerador y fuera máximo 2 horas.</p>
                   )}
+                  {conserva?.fridge ? (
+                    <p className="mt-1 text-sm leading-relaxed text-leaf">
+                      USDA: {conserva.fridge} en refrigerador
+                      {conserva.freezer ? `, ${conserva.freezer} en congelador` : ""}.
+                    </p>
+                  ) : null}
                 </div>
               </li>
             );
