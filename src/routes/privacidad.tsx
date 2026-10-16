@@ -26,6 +26,12 @@ function Privacidad() {
           nombre. La foto del producto, si aparece, la pide tu teléfono a images.openfoodfacts.net.
         </p>
         <p>
+          En el inicio, esa misma vía pregunta la temperatura de la ciudad que escribiste a Open-Meteo
+          (open-meteo.com), también sin llave. Se manda el nombre de la ciudad, no tu calle ni tu GPS. En una
+          ficha de fruta, se pide el nombre de esa fruta a Fruityvice (fruityvice.com) para mostrar calorías por
+          100 g. El código público de esas APIs está en GitHub: open-meteo/open-meteo y fruityvice/fruityvice-api.
+        </p>
+        <p>
           Esa consulta se recuerda unos minutos en la memoria del servidor para no repetirla. No se escribe en disco
           ni se asocia a una persona.
         </p>

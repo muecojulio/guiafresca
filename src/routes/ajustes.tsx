@@ -1,17 +1,27 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Shell } from "@/components/shell";
 import { SwitchRow, usePrefs } from "@/components/ui";
+import { readCity, writeCity } from "@/lib/prefs";
 
 export const Route = createFileRoute("/ajustes")({ component: Ajustes });
 
 function Ajustes() {
   const prefs = usePrefs();
+  const [city, setCity] = useState("");
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setCity(readCity());
+  }, []);
 
   return (
     <Shell>
       <header className="px-5 pt-8">
         <h1 className="font-display text-4xl">Ajustes</h1>
-        <p className="mt-2 text-sm leading-relaxed text-stone">Todo se queda en este aparato.</p>
+        <p className="mt-2 text-sm leading-relaxed text-stone">
+          Los interruptores se quedan en este aparato. La ciudad solo sirve para preguntar la temperatura.
+        </p>
       </header>
       <div className="space-y-3 px-5 pt-6">
         <SwitchRow
@@ -32,6 +42,31 @@ function Ajustes() {
           label="Avisos de etileno"
           hint="Muestra qué fruta apura a la de al lado."
         />
+        <form
+          className="rounded-card border border-line bg-card px-4 py-3"
+          onSubmit={(event) => {
+            event.preventDefault();
+            writeCity(city);
+            setSaved(true);
+          }}
+        >
+          <label className="block text-base" htmlFor="ciudad">
+            Ciudad del clima
+          </label>
+          <p className="mt-1 text-sm leading-relaxed text-stone">Open-Meteo, sin llave. No usa tu ubicación exacta.</p>
+          <input
+            id="ciudad"
+            value={city}
+            onChange={(event) => {
+              setCity(event.target.value);
+              setSaved(false);
+            }}
+            className="mt-3 min-h-12 w-full rounded-full border border-line bg-paper px-4 text-base outline-none"
+          />
+          <button type="submit" className="tap mt-3 inline-flex min-h-11 items-center text-sm text-leaf">
+            {saved ? "Ciudad guardada" : "Guardar ciudad"}
+          </button>
+        </form>
       </div>
       <ul className="mt-8 px-5">
         <li>

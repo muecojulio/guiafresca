@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { getGuide, PLACE_LABEL, SOURCES } from "@/lib/catalog";
+import { nutricionDe, type Nutricion } from "@/lib/fruta.functions";
 import { Shell } from "@/components/shell";
 import { SaveButton, usePrefs, useSavedSet } from "@/components/ui";
 
@@ -11,6 +13,22 @@ function Detail() {
   const item = getGuide(slug);
   const saved = useSavedSet();
   const prefs = usePrefs();
+  const [nutri, setNutri] = useState<Nutricion | null>(null);
+
+  useEffect(() => {
+    let cancel = false;
+    setNutri(null);
+    nutricionDe({ data: slug })
+      .then((next) => {
+        if (!cancel) setNutri(next);
+      })
+      .catch(() => {
+        if (!cancel) setNutri(null);
+      });
+    return () => {
+      cancel = true;
+    };
+  }, [slug]);
 
   if (!item) {
     return (
@@ -114,6 +132,22 @@ function Detail() {
           ) : null}
         </section>
 
+        {nutri ? (
+          <section>
+            <h2 className="font-display text-3xl">Por 100 g</h2>
+            <p className="mt-2 text-sm leading-relaxed text-stone">
+              {nutri.label === item.name ? nutri.label : `${nutri.label}, dentro de ${item.name}`}. Dato de
+              Fruityvice, un API público sin llave. No cambia cómo se guarda.
+            </p>
+            <dl className="mt-4 grid grid-cols-2 gap-3">
+              <Nutri k="Energía" v={`${fmt(nutri.calories)} kcal`} />
+              <Nutri k="Azúcar" v={`${fmt(nutri.sugar)} g`} />
+              <Nutri k="Carbohidratos" v={`${fmt(nutri.carbohydrates)} g`} />
+              <Nutri k="Proteína" v={`${fmt(nutri.protein)} g`} />
+            </dl>
+          </section>
+        ) : null}
+
         <section>
           <h2 className="font-display text-3xl">De dónde sale</h2>
           <ul className="mt-4 space-y-3">
@@ -132,6 +166,19 @@ function Detail() {
         </section>
       </article>
     </Shell>
+  );
+}
+
+function fmt(value: number) {
+  return value.toLocaleString("es-MX", { maximumFractionDigits: 1 });
+}
+
+function Nutri({ k, v }: { k: string; v: string }) {
+  return (
+    <div className="rounded-card border border-line bg-card px-4 py-3">
+      <dt className="text-xs tracking-[0.14em] text-stone uppercase">{k}</dt>
+      <dd className="mt-1 text-base">{v}</dd>
+    </div>
   );
 }
 

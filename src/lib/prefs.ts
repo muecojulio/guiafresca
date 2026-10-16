@@ -3,7 +3,10 @@ export const KEYS = {
   night: "guiafresca.noche",
   heat: "guiafresca.calor",
   ethylene: "guiafresca.etileno",
+  city: "guiafresca.ciudad",
 } as const;
+
+export const DEFAULT_CITY = "Ciudad de México";
 
 function readList(): string[] {
   try {
@@ -41,4 +44,17 @@ export function writeFlag(key: string, on: boolean) {
 
 export function applyNight(on: boolean) {
   document.documentElement.classList.toggle("night", on);
+}
+
+export function readCity(): string {
+  if (typeof window === "undefined") return DEFAULT_CITY;
+  const raw = localStorage.getItem(KEYS.city)?.trim();
+  return raw && raw.length >= 2 ? raw.slice(0, 40) : DEFAULT_CITY;
+}
+
+export function writeCity(city: string) {
+  const next = city.trim().slice(0, 40);
+  if (next.length < 2) return;
+  localStorage.setItem(KEYS.city, next);
+  window.dispatchEvent(new Event("guiafresca-prefs"));
 }

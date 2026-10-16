@@ -1,7 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { GUIDES, type GroupId, type HomePlace } from "@/lib/catalog";
+import { climaDe, type Clima } from "@/lib/clima.functions";
+import { readCity } from "@/lib/prefs";
 import { Shell, Mark } from "@/components/shell";
 import { GroupFilters, GuideCard, PlaceFilters, usePrefs } from "@/components/ui";
 
@@ -13,6 +15,21 @@ function Home() {
   const [group, setGroup] = useState<GroupId | "todas">("todas");
   const [place, setPlace] = useState<HomePlace | "todas">("todas");
   const [q, setQ] = useState("");
+  const [clima, setClima] = useState<Clima | null>(null);
+
+  useEffect(() => {
+    let cancel = false;
+    climaDe({ data: readCity() })
+      .then((next) => {
+        if (!cancel) setClima(next);
+      })
+      .catch(() => {
+        if (!cancel) setClima(null);
+      });
+    return () => {
+      cancel = true;
+    };
+  }, []);
 
   const items = useMemo(
     () =>
@@ -31,6 +48,25 @@ function Home() {
         <p className="mt-3 max-w-sm text-base leading-relaxed text-stone">
           Qué va dentro del refrigerador, qué se queda fuera, cuántos días dura y cómo se ve cuando ya se puede comer.
         </p>
+        {clima ? (
+          <p className="mt-3 max-w-sm text-sm leading-relaxed text-stone">
+            Ahora en {clima.city}: {clima.temp.toLocaleString("es-MX")} °C, vía Open-Meteo.
+            {clima.veryHot
+              ? " Hace mucho calor: lácteos y fruta partida, fuera, se tiran a la hora."
+              : clima.hot
+                ? " Hace calor: conviene acortar lo que se queda fuera."
+                : " No hace falta acortar los tiempos de fuera."}
+          </p>
+        ) : null}
+        {clima?.hot && !prefs.heat ? (
+          <button
+            type="button"
+            className="tap mt-3 inline-flex min-h-11 items-center rounded-full bg-ink px-4 text-sm text-paper"
+            onClick={() => prefs.setHeat(true)}
+          >
+            Activar aviso de calor
+          </button>
+        ) : null}
       </header>
 
       <form
