@@ -137,7 +137,10 @@ function Detail() {
             <h2 className="font-display text-3xl">Por 100 g</h2>
             <p className="mt-2 text-sm leading-relaxed text-stone">
               {nutri.label === item.name ? nutri.label : `${nutri.label}, dentro de ${item.name}`}. Dato de
-              Fruityvice, un API público sin llave. No cambia cómo se guarda.
+              {nutri.source === "api"
+                ? " Fruityvice, un API público sin llave."
+                : " la copia local del dataset de Fruityvice, porque el API no respondió."}{" "}
+              No cambia cómo se guarda.
             </p>
             <dl className="mt-4 grid grid-cols-2 gap-3">
               <Nutri k="Energía" v={`${fmt(nutri.calories)} kcal`} />

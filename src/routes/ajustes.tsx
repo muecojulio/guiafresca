@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Shell } from "@/components/shell";
 import { SwitchRow, usePrefs } from "@/components/ui";
+import { miCiudad } from "@/lib/location.functions";
 import { readCity, writeCity } from "@/lib/prefs";
 
 export const Route = createFileRoute("/ajustes")({ component: Ajustes });
@@ -10,6 +11,24 @@ function Ajustes() {
   const prefs = usePrefs();
   const [city, setCity] = useState("");
   const [saved, setSaved] = useState(false);
+  const [detecting, setDetecting] = useState(false);
+  const [detectError, setDetectError] = useState("");
+
+  function detectarCiudad() {
+    setDetecting(true);
+    setDetectError("");
+    miCiudad()
+      .then((next) => {
+        setCity(next.city);
+        setSaved(false);
+      })
+      .catch(() => {
+        setDetectError("No pude detectar la ciudad. Escríbela a mano.");
+      })
+      .finally(() => {
+        setDetecting(false);
+      });
+  }
 
   useEffect(() => {
     setCity(readCity());
@@ -63,9 +82,23 @@ function Ajustes() {
             }}
             className="mt-3 min-h-12 w-full rounded-full border border-line bg-paper px-4 text-base outline-none"
           />
-          <button type="submit" className="tap mt-3 inline-flex min-h-11 items-center text-sm text-leaf">
-            {saved ? "Ciudad guardada" : "Guardar ciudad"}
-          </button>
+          <div className="mt-3 flex flex-wrap items-center gap-3">
+            <button type="submit" className="tap inline-flex min-h-11 items-center text-sm text-leaf">
+              {saved ? "Ciudad guardada" : "Guardar ciudad"}
+            </button>
+            <button
+              type="button"
+              className="tap inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-paper px-4 text-sm text-ink"
+              onClick={detectarCiudad}
+              disabled={detecting}
+            >
+              {detecting ? "Detectando…" : "Detectar ciudad"}
+            </button>
+          </div>
+          {detectError ? <p className="mt-2 text-sm text-citrus">{detectError}</p> : null}
+          <p className="mt-2 text-sm leading-relaxed text-stone">
+            Detectar usa ipapi.co, un API público sin llave: solo la ciudad, nunca tu calle.
+          </p>
         </form>
       </div>
       <ul className="mt-8 px-5">

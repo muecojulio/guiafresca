@@ -150,6 +150,9 @@ export default defineConfig(({ command, isPreview }) => ({
     host: "0.0.0.0",
     port: 8080,
     strictPort: true,
+    // Live-preview proxy ( Arena / e2b ) serves the app under a
+    // *.e2b.app host; Vite's host allowlist would 403 it otherwise.
+    allowedHosts: [".e2b.app"],
   },
   preview: {
     host: "127.0.0.1",

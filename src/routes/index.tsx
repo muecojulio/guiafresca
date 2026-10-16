@@ -1,9 +1,10 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { MapPin, Search } from "lucide-react";
 import { GUIDES, type GroupId, type HomePlace } from "@/lib/catalog";
 import { climaDe, type Clima } from "@/lib/clima.functions";
-import { readCity } from "@/lib/prefs";
+import { miCiudad } from "@/lib/location.functions";
+import { readCity, writeCity } from "@/lib/prefs";
 import { Shell, Mark } from "@/components/shell";
 import { GroupFilters, GuideCard, PlaceFilters, usePrefs } from "@/components/ui";
 
@@ -16,6 +17,8 @@ function Home() {
   const [place, setPlace] = useState<HomePlace | "todas">("todas");
   const [q, setQ] = useState("");
   const [clima, setClima] = useState<Clima | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [locError, setLocError] = useState("");
 
   useEffect(() => {
     let cancel = false;
@@ -30,6 +33,25 @@ function Home() {
       cancel = true;
     };
   }, []);
+
+  function usarMiUbicacion() {
+    setLocating(true);
+    setLocError("");
+    miCiudad()
+      .then((next) => {
+        writeCity(next.city);
+        return climaDe({ data: next.city });
+      })
+      .then((climaNext) => {
+        setClima(climaNext);
+      })
+      .catch(() => {
+        setLocError("No pude detectar la ciudad. Escríbela en Ajustes.");
+      })
+      .finally(() => {
+        setLocating(false);
+      });
+  }
 
   const items = useMemo(
     () =>
@@ -58,6 +80,18 @@ function Home() {
                 : " No hace falta acortar los tiempos de fuera."}
           </p>
         ) : null}
+        <div className="mt-3">
+          <button
+            type="button"
+            className="tap inline-flex min-h-11 items-center gap-2 rounded-full border border-line bg-card px-4 text-sm text-ink"
+            onClick={usarMiUbicacion}
+            disabled={locating}
+          >
+            <MapPin className="size-4" aria-hidden="true" />
+            {locating ? "Detectando…" : "Usar mi ubicación"}
+          </button>
+          {locError ? <p className="mt-2 text-sm text-citrus">{locError}</p> : null}
+        </div>
         {clima?.hot && !prefs.heat ? (
           <button
             type="button"

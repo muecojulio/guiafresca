@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { matchGuideSlug } from "@/lib/catalog";
+import { cacheKey, cached } from "@/lib/cache.server";
 
 export type LiveProduct = {
   code: string;
@@ -9,13 +10,10 @@ export type LiveProduct = {
   guideSlug: string | null;
 };
 
-type CacheEntry = { at: number; products: LiveProduct[] };
-
-const cache = new Map<string, CacheEntry>();
 const TTL_MS = 10 * 60 * 1000;
 const ENDPOINTS = [
-  "https://world.openfoodfacts.net/api/v2/search",
-  "https://world.openfoodfacts.org/api/v2/search",
+  "https://world.openfoodfacts.net",
+  "https://world.openfoodfacts.org",
 ];
 const IMAGE_HOSTS = new Set(["images.openfoodfacts.net", "images.openfoodfacts.org"]);
 
@@ -40,69 +38,70 @@ function safeImage(value: unknown): string | null {
   }
 }
 
+async function searchOpenFoodFacts(query: string): Promise<LiveProduct[]> {
+  let lastError = "La consulta en vivo no respondió.";
+  for (const endpoint of ENDPOINTS) {
+    const url = new URL(`${endpoint}/api/v2/search`);
+    url.searchParams.set("search_terms", query);
+    url.searchParams.set("page_size", "8");
+    url.searchParams.set(
+      "fields",
+      "code,product_name,brands,image_front_small_url,categories_tags",
+    );
+    try {
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "GuiaFresca/1.0 (guia de conservacion en el hogar)",
+        },
+        signal: AbortSignal.timeout(8000),
+        redirect: "error",
+      });
+      if (!response.ok) {
+        lastError = `Open Food Facts respondió ${response.status}.`;
+        continue;
+      }
+      const body = (await response.json()) as {
+        products?: Array<Record<string, unknown>>;
+      };
+      return (body.products ?? [])
+        .map((product) => {
+          const name = typeof product.product_name === "string" ? product.product_name.trim() : "";
+          const code = typeof product.code === "string" ? product.code : "";
+          if (!name || !code) return null;
+          const brand = typeof product.brands === "string" ? product.brands.split(",")[0]?.trim() ?? "" : "";
+          const categories = Array.isArray(product.categories_tags)
+            ? product.categories_tags.filter((tag) => typeof tag === "string").join(" ")
+            : "";
+          return {
+            code,
+            name: name.slice(0, 120),
+            brand: brand.slice(0, 80),
+            image: safeImage(product.image_front_small_url),
+            guideSlug: matchGuideSlug(`${name} ${brand} ${categories}`),
+          };
+        })
+        .filter((item): item is LiveProduct => item !== null);
+    } catch {
+      lastError = "No hubo respuesta a tiempo de Open Food Facts.";
+    }
+  }
+  throw new Error(lastError);
+}
+
 export const buscarEnVivo = createServerFn({ method: "GET" })
   .validator(cleanQuery)
   .handler(async ({ data: query }) => {
-    const key = query.toLocaleLowerCase("es");
-    const hit = cache.get(key);
-    if (hit && Date.now() - hit.at < TTL_MS) {
-      return { products: hit.products, cached: true as const, ok: true as const };
-    }
-
-    let lastError = "La consulta en vivo no respondió.";
-    for (const endpoint of ENDPOINTS) {
-      const url = new URL(endpoint);
-      url.searchParams.set("search_terms", query);
-      url.searchParams.set("page_size", "8");
-      url.searchParams.set(
-        "fields",
-        "code,product_name,brands,image_front_small_url,categories_tags",
+    try {
+      const { value, cached: wasCached } = await cached(
+        cacheKey("off", query),
+        TTL_MS,
+        () => searchOpenFoodFacts(query),
       );
-      try {
-        const response = await fetch(url, {
-          headers: {
-            Accept: "application/json",
-            "User-Agent": "GuiaFresca/1.0 (guia de conservacion en el hogar)",
-          },
-          signal: AbortSignal.timeout(8000),
-          redirect: "error",
-        });
-        if (!response.ok) {
-          lastError = `Open Food Facts respondió ${response.status}.`;
-          continue;
-        }
-        const body = (await response.json()) as {
-          products?: Array<Record<string, unknown>>;
-        };
-        const products: LiveProduct[] = (body.products ?? [])
-          .map((product) => {
-            const name = typeof product.product_name === "string" ? product.product_name.trim() : "";
-            const code = typeof product.code === "string" ? product.code : "";
-            if (!name || !code) return null;
-            const brand = typeof product.brands === "string" ? product.brands.split(",")[0]?.trim() ?? "" : "";
-            const categories = Array.isArray(product.categories_tags)
-              ? product.categories_tags.filter((tag) => typeof tag === "string").join(" ")
-              : "";
-            return {
-              code,
-              name: name.slice(0, 120),
-              brand: brand.slice(0, 80),
-              image: safeImage(product.image_front_small_url),
-              guideSlug: matchGuideSlug(`${name} ${brand} ${categories}`),
-            };
-          })
-          .filter((item): item is LiveProduct => item !== null);
-
-        cache.set(key, { at: Date.now(), products });
-        if (cache.size > 80) {
-          const oldest = cache.keys().next().value;
-          if (oldest) cache.delete(oldest);
-        }
-        return { products, cached: false as const, ok: true as const };
-      } catch {
-        lastError = "No hubo respuesta a tiempo de Open Food Facts.";
-      }
+      return { products: value, cached: wasCached, ok: true as const };
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "La consulta en vivo no respondió.";
+      return { products: [] as LiveProduct[], cached: false, ok: false as const, error: message };
     }
-
-    return { products: [] as LiveProduct[], cached: false as const, ok: false as const, error: lastError };
   });
