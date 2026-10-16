@@ -42,7 +42,7 @@ function Detail() {
       {item.photo ? (
         <img
           src={item.photo}
-          alt={item.stages ? `${item.name}: verde, listo y pasado` : item.name}
+          alt={item.stages ? `${item.name}: firme, listo y para comer pronto` : item.name}
           className="mt-2 aspect-square w-full object-cover"
         />
       ) : null}
@@ -78,7 +78,7 @@ function Detail() {
         <section>
           <h2 className="font-display text-3xl">Cómo se ve</h2>
           {item.stages ? (
-            <p className="mt-2 text-sm text-stone">En la foto, de izquierda a derecha: aún verde, listo, pasado.</p>
+            <p className="mt-2 text-sm text-stone">En la foto, de izquierda a derecha: todavía firme, listo, y ya conviene comerlo pronto.</p>
           ) : null}
           <ol className="mt-4 space-y-3">
             <Stage n="1" title="Todavía no" text={item.unripe} />

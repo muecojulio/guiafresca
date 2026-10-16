@@ -215,6 +215,7 @@ export const GUIDES: Guide[] = [
     longer: ["Sepárala de lechuga y hierbas: suelta mucho etileno."],
     avoid: ["No la dejes al sol ni junto a la cebolla."],
     ethylene: "emite",
+    photo: "/guia/manzana.jpg",
     stages: false,
   },
   {
@@ -234,6 +235,7 @@ export const GUIDES: Guide[] = [
     longer: ["Una bolsa perforada en el cajón alarga la semana."],
     avoid: ["No los encierres húmedos."],
     ethylene: "neutro",
+    photo: "/guia/citricos.jpg",
     stages: false,
   },
   {
@@ -253,6 +255,7 @@ export const GUIDES: Guide[] = [
     longer: ["No las laves hasta servirlas."],
     avoid: ["No las dejes en el frutero de la mesa varios días."],
     ethylene: "sensible",
+    photo: "/guia/uva.jpg",
     stages: false,
   },
   {
@@ -272,6 +275,7 @@ export const GUIDES: Guide[] = [
     longer: ["Cubre el corte con papel o tapa, no dejes la cara abierta."],
     avoid: ["Una sandía partida en la mesa pasa la regla de las 2 horas y se tira."],
     ethylene: "neutro",
+    photo: "/guia/sandia.jpg",
     stages: false,
   },
   {
@@ -291,6 +295,7 @@ export const GUIDES: Guide[] = [
     longer: ["Guárdala de lado o parada, sin bolsa cerrada."],
     avoid: ["No esperes a que se ponga más amarilla para que endulce: eso no pasa en casa."],
     ethylene: "neutro",
+    photo: "/guia/pina.jpg",
     stages: false,
   },
   {
@@ -310,6 +315,7 @@ export const GUIDES: Guide[] = [
     longer: ["El corte siempre tapado, nunca en la mesa de la comida larga."],
     avoid: ["La superficie de un melón se lava antes de cortar: la cáscara trae tierra."],
     ethylene: "emite",
+    photo: "/guia/melon.jpg",
     stages: false,
   },
   {
@@ -329,6 +335,7 @@ export const GUIDES: Guide[] = [
     longer: ["Al primer aroma dulce fuerte, al refrigerador."],
     avoid: ["No la guardes junto a plátanos si aún está verde y no quieres apurarla."],
     ethylene: "emite",
+    photo: "/guia/papaya.jpg",
     stages: false,
   },
   {
@@ -348,6 +355,7 @@ export const GUIDES: Guide[] = [
     longer: ["Revisa el cuello, no el centro: por dentro se pasa antes de que se vea."],
     avoid: ["No la refrigeres mientras el cuello esté de piedra."],
     ethylene: "emite",
+    photo: "/guia/pera.jpg",
     stages: false,
   },
   {
@@ -367,6 +375,7 @@ export const GUIDES: Guide[] = [
     longer: ["Una sola capa. El etileno de una pasada acelera al resto."],
     avoid: ["No la encierres con manzanas si aún está verde, salvo que quieras apurarla."],
     ethylene: "emite",
+    photo: "/guia/guayaba.jpg",
     stages: false,
   },
   {
@@ -386,6 +395,7 @@ export const GUIDES: Guide[] = [
     longer: ["Una bolsa de papel con manzana lo apura. El refrigerador lo frena."],
     avoid: ["No lo cortes antes de que ceda: no madura en el plato."],
     ethylene: "sensible",
+    photo: "/guia/kiwi.jpg",
     stages: false,
   },
   {
@@ -405,6 +415,7 @@ export const GUIDES: Guide[] = [
     longer: ["Recipiente bajo, no una bolsa honda donde se aplasten."],
     avoid: ["No las laves al guardarlas."],
     ethylene: "neutro",
+    photo: "/guia/arandano.jpg",
     stages: false,
   },
   {
@@ -424,6 +435,7 @@ export const GUIDES: Guide[] = [
     longer: ["Limón en manzana, pera y aguacate frena el oscurecimiento, no la bacteria."],
     avoid: ["No la dejes en la mesa de una reunión larga."],
     ethylene: "neutro",
+    photo: "/guia/fruta-partida.jpg",
     stages: false,
   },
   {
@@ -443,6 +455,7 @@ export const GUIDES: Guide[] = [
     longer: ["No la laves hasta usarla, o sécala muy bien."],
     avoid: ["El etileno de manzana, plátano y jitomate la oxida antes."],
     ethylene: "sensible",
+    photo: "/guia/lechuga.jpg",
     stages: false,
   },
   {
@@ -462,6 +475,7 @@ export const GUIDES: Guide[] = [
     longer: ["Papel absorbente dentro de un recipiente, no bolsa sellada mojada."],
     avoid: ["No la dejes junto a frutas que maduran."],
     ethylene: "sensible",
+    photo: "/guia/espinaca.jpg",
     stages: false,
   },
   {
@@ -484,6 +498,7 @@ export const GUIDES: Guide[] = [
     ],
     avoid: ["No metas la albahaca al refrigerador si puedes tenerla en la mesa."],
     ethylene: "sensible",
+    photo: "/guia/cilantro.jpg",
     stages: false,
   },
   {
@@ -503,6 +518,7 @@ export const GUIDES: Guide[] = [
     longer: ["Una media o canasta, no una bolsa de plástico."],
     avoid: ["Junto a las papas: la cebolla las hace brotar y ellas humedecen la cebolla."],
     ethylene: "neutro",
+    photo: "/guia/cebolla.jpg",
     stages: false,
   },
   {
@@ -522,6 +538,7 @@ export const GUIDES: Guide[] = [
     longer: ["No quites la piel de papel hasta usarlo."],
     avoid: ["No lo guardes en el refrigerador 'por si acaso'."],
     ethylene: "neutro",
+    photo: "/guia/ajo.jpg",
     stages: false,
   },
   {
@@ -541,6 +558,7 @@ export const GUIDES: Guide[] = [
     longer: ["Una caja de cartón, no bolsa hermética ni bajo el fregadero húmedo."],
     avoid: ["Nunca refrigeres papa cruda para 'que dure'."],
     ethylene: "neutro",
+    photo: "/guia/papa.jpg",
     stages: false,
   },
   {
@@ -560,6 +578,7 @@ export const GUIDES: Guide[] = [
     longer: ["No lo laves hasta cocinarlo."],
     avoid: ["No lo metas al cajón de las verduras crudo."],
     ethylene: "neutro",
+    photo: "/guia/camote.jpg",
     stages: false,
   },
   {
@@ -579,6 +598,7 @@ export const GUIDES: Guide[] = [
     longer: ["Corta las hojas en cuanto llegues: le roban agua a la raíz."],
     avoid: ["No las dejes en la bolsa del súper sudada."],
     ethylene: "sensible",
+    photo: "/guia/zanahoria.jpg",
     stages: false,
   },
   {
@@ -598,6 +618,7 @@ export const GUIDES: Guide[] = [
     longer: ["Hacia el frente del refrigerador, no en la parte más helada, si se pican."],
     avoid: ["El etileno lo amarillea."],
     ethylene: "sensible",
+    photo: "/guia/pepino.jpg",
     stages: false,
   },
   {
@@ -617,6 +638,7 @@ export const GUIDES: Guide[] = [
     longer: ["Seco, en el cajón, sin lavar."],
     avoid: ["No lo guardes mojado."],
     ethylene: "sensible",
+    photo: "/guia/pimiento.jpg",
     stages: false,
   },
   {
@@ -636,6 +658,7 @@ export const GUIDES: Guide[] = [
     longer: ["Una bolsa de papel o recipiente aireado."],
     avoid: ["No los laves en racimo para guardarlos."],
     ethylene: "sensible",
+    photo: "/guia/chile.jpg",
     stages: false,
   },
   {
@@ -655,6 +678,7 @@ export const GUIDES: Guide[] = [
     longer: ["Un vaso con agua en el tallo, como ramo, dentro del refrigerador."],
     avoid: ["Manzanas al lado lo amarillean."],
     ethylene: "sensible",
+    photo: "/guia/brocoli.jpg",
     stages: false,
   },
   {
@@ -674,6 +698,7 @@ export const GUIDES: Guide[] = [
     longer: ["Papel, no la charola envuelta en película si ya sudó."],
     avoid: ["No los laves para guardarlos. Límpialos con un paño al usarlos."],
     ethylene: "neutro",
+    photo: "/guia/champinon.jpg",
     stages: false,
   },
   {
@@ -693,6 +718,7 @@ export const GUIDES: Guide[] = [
     longer: ["Cómpralo y cocínalo el mismo día o al siguiente."],
     avoid: ["No lo dejes en la bolsa del mercado a temperatura ambiente."],
     ethylene: "neutro",
+    photo: "/guia/elote.jpg",
     stages: false,
   },
   {
@@ -712,6 +738,7 @@ export const GUIDES: Guide[] = [
     longer: ["No la laves hasta cocinarla."],
     avoid: ["No la congeles en ruedas crudas si la quieres salteada: suelta agua."],
     ethylene: "sensible",
+    photo: "/guia/calabacita.jpg",
     stages: false,
   },
   {
@@ -731,6 +758,7 @@ export const GUIDES: Guide[] = [
     longer: ["El congelador es el truco que de verdad alarga."],
     avoid: ["No lo dejes en la ventana húmeda."],
     ethylene: "neutro",
+    photo: "/guia/jengibre.jpg",
     stages: false,
   },
   {
@@ -750,6 +778,7 @@ export const GUIDES: Guide[] = [
     longer: ["Reparte en recipientes bajos para que enfríe antes de tapar."],
     avoid: ["No dejes la olla en la estufa toda la noche."],
     ethylene: "neutro",
+    photo: "/guia/verdura-cocida.jpg",
     stages: false,
   },
   {
@@ -813,6 +842,7 @@ export const GUIDES: Guide[] = [
     longer: ["El suero se mezcla. No es señal de descomposición."],
     avoid: ["No comas del vaso y lo regreses al refrigerador días después."],
     ethylene: "neutro",
+    photo: "/guia/yogur.jpg",
     stages: false,
   },
   {
@@ -832,6 +862,7 @@ export const GUIDES: Guide[] = [
     longer: ["Escurre el suero y cámbialo de recipiente si vino nadando."],
     avoid: ["No lo dejes en el mostrador para que 'se temple' más de un rato."],
     ethylene: "neutro",
+    photo: "/guia/queso-fresco.jpg",
     stages: false,
   },
   {
@@ -851,6 +882,7 @@ export const GUIDES: Guide[] = [
     longer: ["Papel encerado y luego una bolsa, no película pegada para siempre."],
     avoid: ["No uses el mismo cuchillo del moho en el resto."],
     ethylene: "neutro",
+    photo: "/guia/queso-maduro.jpg",
     stages: false,
   },
   {
@@ -870,6 +902,7 @@ export const GUIDES: Guide[] = [
     longer: ["Un recipiente opaco. La luz y el ajo del refrigerador la perfuman."],
     avoid: ["No la dejes al sol de la ventana."],
     ethylene: "neutro",
+    photo: "/guia/mantequilla.jpg",
     stages: false,
   },
   {
@@ -892,6 +925,7 @@ export const GUIDES: Guide[] = [
     ],
     avoid: ["Un huevo refrigerado que pasó horas fuera ya no se guarda 'para después'."],
     ethylene: "neutro",
+    photo: "/guia/huevo.jpg",
     stages: false,
   },
 ];
