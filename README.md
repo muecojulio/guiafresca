@@ -24,3 +24,15 @@ el barrido de caducados), así sobreviven a los cold starts de Vercel.
 Ver `src/lib/data/README.md`. Respaldo local de Fruityvice (nutrición sin red) y la tabla
 USDA FoodKeeper de `jelera/food-shelflife-db` (MIT) para dar días de conservación USDA a
 productos de tienda que aún no tienen ficha (`src/lib/conservacion.functions.ts`).
+
+## Verificación de tiempos
+
+Cada producto tiene su fuente en `src/lib/verificacion.ts`: tabla, fila exacta y rangos. La ficha lo muestra en "Cómo se comprobó".
+
+- **USDA FoodKeeper** (32 productos): la cifra debe ser igual a la fila de `src/lib/data/foodkeeper-ingredients.csv`.
+- **Virginia Tech 348-960** (6) y **SDSU** (1): cifra leída de la publicación.
+- **Criterio de la guía** (23): sin cifra comparable en las tablas; se muestra como criterio.
+
+Si la tabla da un tiempo distinto al de la guía, la fuente debe llevar `excepcion`.
+
+Para correr las comprobaciones: `npm run check:guia`.
