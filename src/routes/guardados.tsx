@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getGuide } from "@/lib/catalog";
 import { Shell } from "@/components/shell";
-import { GuideCard, usePrefs, useSavedSet } from "@/components/ui";
+import { GuideCard } from "@/components/ui";
+import { usePrefs } from "@/lib/use-prefs";
+import { useSavedSet } from "@/lib/use-saved-set";
 
 export const Route = createFileRoute("/guardados")({ component: Guardados });
 

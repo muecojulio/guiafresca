@@ -7,7 +7,8 @@ import {
   type Conservacion,
 } from "@/lib/conservacion.functions";
 import { Shell } from "@/components/shell";
-import { GuideCard, usePrefs } from "@/components/ui";
+import { GuideCard } from "@/components/ui";
+import { usePrefs } from "@/lib/use-prefs";
 
 export const Route = createFileRoute("/buscar")({
   validateSearch: (search: Record<string, unknown>) => ({

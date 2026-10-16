@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Shell } from "@/components/shell";
-import { SwitchRow, usePrefs } from "@/components/ui";
+import { SwitchRow } from "@/components/ui";
 import { miCiudad } from "@/lib/location.functions";
 import { readCity, writeCity } from "@/lib/prefs";
+import { usePrefs } from "@/lib/use-prefs";
 
 export const Route = createFileRoute("/ajustes")({ component: Ajustes });
 
