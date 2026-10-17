@@ -8,6 +8,32 @@ Lo que se guarda (favoritos y ajustes) se queda en el teléfono. No hay cuentas.
 
 Node declarado: 24.x
 
+## Sistema de interacción
+
+Todo el comportamiento táctil y de teclado vive en piezas reutilizables, con las decisiones
+difíciles fuera de React para poder probarlas sin navegador:
+
+| Pieza                                               | Para qué                                                                                                                                                    |
+| --------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/lib/interaction.ts`                            | Decisiones puras: bloqueo de eje (1.2), umbral de swipe, teclado de pestañas y radios, búsqueda sin diacríticos, señales de desborde, días de conservación. |
+| `src/lib/interaction.test.ts`                       | 38 comprobaciones de esas decisiones (`npm test`).                                                                                                          |
+| `src/lib/use-pan.ts`                                | Arrastre con bloqueo de eje sobre Pointer Events; ignora controles anidados y anula el clic que sigue a un arrastre.                                        |
+| `src/lib/use-overflow-rail.ts`                      | Carril horizontal: desborde real, centrado de la opción elegida, desplazamiento suave salvo con movimiento reducido.                                        |
+| `src/lib/announcer.ts` + `src/components/decor.tsx` | Región viva única: lo que se ve (“Guardado”, “3 fichas”) también se oye.                                                                                    |
+| `src/lib/toasts.ts` + `src/components/toaster.tsx`  | Avisos con “Deshacer”, fuera de React para usarse desde cualquier componente.                                                                               |
+| `src/components/tabs.tsx`                           | Pestañas con `tablist`/`tab`/`tabpanel`, indicador deslizante, flechas/Inicio/Fin y cambio de panel por gesto horizontal.                                   |
+| `src/components/chips.tsx`                          | Filtros con semántica de grupo de radios, carril con imán y señales de desborde.                                                                            |
+| `src/components/cards.tsx`                          | Tarjetas, carrusel en móvil → cuadrícula en pantallas grandes, termómetro de conservación.                                                                  |
+| `src/components/swipe-reveal.tsx`                   | Tarjeta que se desliza para revelar acciones: siempre con alternativa visible (botón “⋯” en táctil, acciones a la vista en escritorio).                     |
+| `src/components/combobox.tsx`                       | Combobox con búsqueda (flechas, Inicio/Fin, Enter, Escape, sin coincidencias, cierre al tocar fuera).                                                       |
+| `src/components/accordion.tsx`                      | Paneles plegables con altura animada y estado accesible.                                                                                                    |
+| `src/components/actions.tsx`                        | Botón con los cinco estados (inactivo, cargando, éxito, error, deshabilitado), interruptor `role="switch"` y botón de guardar con chispas.                  |
+| `src/styles.css`                                    | Tokens de color, duración y curva; microinteracciones y el bloque único de `prefers-reduced-motion`.                                                        |
+
+Reglas que se sostienen en todo el proyecto: objetivos táctiles de 44 px, `touch-action:
+manipulation` en controles, movimiento reducido que apaga lo decorativo sin quitar nada usable, y
+estados nunca explicados solo con color.
+
 ## APIs públicas (sin llave ni registro)
 
 - **Open-Meteo** — clima y geocoding de la ciudad (`src/lib/clima.functions.ts`).

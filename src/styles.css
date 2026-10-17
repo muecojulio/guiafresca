@@ -1,24 +1,81 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------------------
+   Guía Fresca · sistema visual
+   Mercado en casa: papel, tinta, hoja y cítrico. Todo el movimiento nace de
+   tokens para que un solo bloque de `prefers-reduced-motion` lo apague.
+--------------------------------------------------------------------------- */
+
 @theme {
   --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --font-sans: "Avenir Next", "Segoe UI", sans-serif;
+  --font-sans: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+
+  /* Papel y tinta */
   --color-paper: #f3efe4;
+  --color-paper-deep: #ebe4d2;
   --color-ink: #1c241c;
-  --color-leaf: #2f6b45;
-  --color-citrus: #d46a2e;
-  --color-stone: #8d887c;
-  --color-line: #e3dccb;
+  --color-ink-soft: #39432f;
   --color-card: #faf7f0;
+
+  /* Mercado */
+  --color-leaf: #2f6b45;
+  --color-leaf-deep: #1f4c30;
+  --color-leaf-soft: #dceade;
+  --color-citrus: #d46a2e;
+  --color-citrus-soft: #f7e2d0;
+  --color-sun: #c98a12;
+  --color-sun-soft: #f6e7c4;
+  --color-berry: #a3344f;
+  --color-berry-soft: #f3dde1;
+  --color-stone: #6c675b;
+  --color-stone-soft: #918b7d;
+  --color-line: #e2dac7;
+  --color-line-strong: #cec4ab;
+
+  /* Noche */
+  --color-night-paper: #12160f;
+  --color-night-card: #1b2118;
+
   --radius-card: 1.25rem;
+  --radius-pill: 999px;
+
+  --shadow-press: 0 1px 2px rgb(28 36 28 / 0.16);
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.6) inset, 0 6px 16px -12px rgb(28 36 28 / 0.45);
+  --shadow-lift: 0 18px 34px -22px rgb(28 36 28 / 0.55), 0 2px 6px -3px rgb(28 36 28 / 0.25);
+  --shadow-glow: 0 0 0 1px rgb(47 107 69 / 0.18), 0 14px 30px -18px rgb(47 107 69 / 0.6);
+
+  /* Movimiento: una sola escala de duración y curvas */
+  --duration-tap: 120ms;
+  --duration-quick: 180ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+  --duration-drift: 26s;
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.5, 0, 0.2, 1);
+  --ease-pop: cubic-bezier(0.34, 1.4, 0.64, 1);
 }
 
 html.night {
-  --color-paper: #141814;
-  --color-ink: #f3efe4;
-  --color-card: #1c241c;
-  --color-line: #2a332c;
-  --color-stone: #b7b2a6;
+  --color-paper: #12160f;
+  --color-paper-deep: #0d100b;
+  --color-ink: #f1ecdd;
+  --color-ink-soft: #d8d3c2;
+  --color-card: #1b2118;
+  --color-leaf: #7ec08d;
+  --color-leaf-deep: #a7d8b1;
+  --color-leaf-soft: #24301f;
+  --color-citrus: #eb9a5c;
+  --color-citrus-soft: #33241a;
+  --color-sun: #e8bf5f;
+  --color-sun-soft: #2f2717;
+  --color-berry: #e8909f;
+  --color-berry-soft: #331d22;
+  --color-stone: #b3ada0;
+  --color-stone-soft: #9a9487;
+  --color-line: #2b332a;
+  --color-line-strong: #3b4438;
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 10px 22px -18px rgb(0 0 0 / 0.9);
+  --shadow-lift: 0 20px 36px -24px rgb(0 0 0 / 0.95), 0 2px 6px -3px rgb(0 0 0 / 0.6);
   color-scheme: dark;
 }
 
@@ -26,41 +83,517 @@ html.night {
   html {
     background: var(--color-paper);
     color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
   }
   body {
     font-family: var(--font-sans);
     background: var(--color-paper);
     color: var(--color-ink);
     min-height: 100%;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
   }
   button:not(:disabled),
-  [role="button"]:not(:disabled) {
+  [role="button"]:not(:disabled),
+  [role="tab"]:not(:disabled),
+  [role="switch"]:not(:disabled),
+  summary {
     cursor: pointer;
+  }
+  button,
+  [role="button"],
+  [role="tab"],
+  [role="option"],
+  [role="switch"],
+  [role="radio"],
+  a {
+    /* Sin retraso de 300 ms en táctil, sin zoom accidental */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: rgb(47 107 69 / 0.14);
   }
   h1,
   h2,
+  h3,
   .font-display {
     font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-leaf);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  /* La barra de desplazamiento se oculta solo a la vista, nunca al gesto */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  img {
+    background-color: var(--color-paper-deep);
+  }
+  ::selection {
+    background: var(--color-sun-soft);
+    color: var(--color-ink);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .rise {
-    animation: rise 460ms cubic-bezier(0.2, 0, 0, 1) both;
+/* --------------------------------------------------------------------------
+   Fondo vivo: manchas de mercado que respiran muy despacio
+-------------------------------------------------------------------------- */
+
+.market-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(60rem 40rem at 8% -10%, rgb(47 107 69 / 0.14), transparent 62%),
+    radial-gradient(48rem 32rem at 108% 4%, rgb(212 106 46 / 0.16), transparent 60%),
+    radial-gradient(52rem 36rem at 50% 118%, rgb(201 138 18 / 0.12), transparent 60%);
+}
+
+.market-backdrop__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(56px);
+  opacity: 0.5;
+}
+.market-backdrop__blob--leaf {
+  width: 26rem;
+  height: 26rem;
+  top: -6rem;
+  left: -8rem;
+  background: radial-gradient(circle at 40% 40%, rgb(47 107 69 / 0.5), transparent 68%);
+}
+.market-backdrop__blob--citrus {
+  width: 22rem;
+  height: 22rem;
+  top: 22%;
+  right: -9rem;
+  background: radial-gradient(circle at 60% 40%, rgb(212 106 46 / 0.45), transparent 68%);
+}
+.market-backdrop__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.32;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+html.night .market-backdrop__grain {
+  mix-blend-mode: screen;
+  opacity: 0.18;
+}
+html.night .market-backdrop {
+  background:
+    radial-gradient(60rem 40rem at 8% -10%, rgb(126 192 141 / 0.1), transparent 62%),
+    radial-gradient(48rem 32rem at 108% 4%, rgb(235 154 92 / 0.1), transparent 60%),
+    radial-gradient(52rem 36rem at 50% 118%, rgb(232 191 95 / 0.08), transparent 60%);
+}
+html.night .market-backdrop__blob {
+  opacity: 0.32;
+}
+
+/* --------------------------------------------------------------------------
+   Microinteracciones base (botones, chips, tarjetas, campos)
+-------------------------------------------------------------------------- */
+
+.press {
+  transition:
+    transform var(--duration-tap) var(--ease-out),
+    box-shadow var(--duration-quick) var(--ease-out),
+    background-color var(--duration-quick) var(--ease-out),
+    border-color var(--duration-quick) var(--ease-out),
+    color var(--duration-quick) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lift);
   }
-  .rise-2 {
-    animation-delay: 80ms;
+  .lift:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-press);
   }
-  .rise-3 {
-    animation-delay: 160ms;
+  .press:hover {
+    border-color: var(--color-line-strong);
   }
 }
+
+.press:active:not(:disabled, [aria-disabled="true"]) {
+  transform: translateY(1px) scale(0.975);
+  box-shadow: var(--shadow-press);
+}
+
+/* Alias que ya usaban las rutas */
+.tap {
+  transition:
+    transform var(--duration-tap) var(--ease-out),
+    background-color var(--duration-quick) var(--ease-out),
+    color var(--duration-quick) var(--ease-out),
+    border-color var(--duration-quick) var(--ease-out),
+    box-shadow var(--duration-quick) var(--ease-out);
+}
+.tap:active:not(:disabled, [aria-disabled="true"]) {
+  transform: translateY(1px) scale(0.97);
+}
+
+/* Brillo que recorre tarjetas y botones con el mouse */
+.sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 30%, rgb(255 255 255 / 0.5) 48%, transparent 66%);
+  transform: translateX(-60%);
+}
+@media (hover: hover) and (pointer: fine) {
+  .sheen:hover::after {
+    animation: sheen 760ms var(--ease-out) 1;
+  }
+}
+
+.ring-soft {
+  box-shadow: var(--shadow-card);
+}
+
+/* Tarjetas: entrada escalonada, elevación y estado elegido */
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+}
+.card--chosen {
+  border-color: var(--color-leaf);
+  box-shadow: var(--shadow-glow);
+}
+
+/* --------------------------------------------------------------------------
+   Carriles: desplazamiento nativo, imán suave y señales de desborde
+-------------------------------------------------------------------------- */
+
+.rail {
+  position: relative;
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+}
+.rail::-webkit-scrollbar {
+  display: none;
+}
+.rail > * {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+}
+
+/* Máscaras de desborde: se encienden solo cuando hay contenido fuera */
+.rail-frame {
+  position: relative;
+}
+.rail-frame::before,
+.rail-frame::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0.25rem;
+  width: 1.75rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+  z-index: 1;
+}
+.rail-frame::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-paper), transparent);
+}
+.rail-frame::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-paper), transparent);
+}
+.rail-frame[data-overflow-start="true"]::before,
+.rail-frame[data-overflow-end="true"]::after {
+  opacity: 1;
+}
+.rail-dots {
+  display: flex;
+  gap: 0.375rem;
+  justify-content: center;
+  align-items: center;
+}
+.rail-dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: var(--color-line-strong);
+  transition:
+    width var(--duration-base) var(--ease-out),
+    background-color var(--duration-base) var(--ease-out);
+}
+.rail-dot[data-on="true"] {
+  width: 1.15rem;
+  background: var(--color-leaf);
+}
+
+/* En pantallas grandes los carruseles se vuelven cuadrícula */
+@media (min-width: 40rem) {
+  .rail--to-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    overflow: visible;
+  }
+  .rail-hint {
+    display: none;
+  }
+}
+@media (min-width: 64rem) {
+  .rail--to-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Swipe para revelar acciones
+-------------------------------------------------------------------------- */
+
+.reveal {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  background: var(--color-paper-deep);
+}
+.reveal__actions {
+  position: absolute;
+  inset: 0 0 0 auto;
+  display: flex;
+  align-items: stretch;
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+.reveal__surface {
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: var(--color-card);
+  will-change: transform;
+  transition: transform var(--duration-base) var(--ease-out);
+}
+/* Escritorio: las acciones no se esconden tras la tarjeta, se muestran al
+   lado y el swipe deja de ser necesario. */
+.reveal[data-desktop="true"] .reveal__surface {
+  margin-right: var(--reveal-width, 6rem);
+}
+/* Espacio para el boton de acciones del modo tactil, definido aqui
+   y no en cada uso. */
+.reveal__surface[data-has-toggle="true"] {
+  padding-right: 3.25rem;
+}
+.reveal__surface[data-dragging="true"] {
+  transition: none;
+  cursor: grabbing;
+}
+
+/* --------------------------------------------------------------------------
+   Paneles animados (acordeón, pestañas, listas)
+-------------------------------------------------------------------------- */
+
+.collapsible {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition:
+    grid-template-rows var(--duration-base) var(--ease-out),
+    opacity var(--duration-quick) var(--ease-out);
+  opacity: 0;
+}
+.collapsible[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+.collapsible > * {
+  overflow: hidden;
+  min-height: 0;
+}
+.disclosure__chevron {
+  transition: transform var(--duration-base) var(--ease-out);
+}
+.disclosure[aria-expanded="true"] .disclosure__chevron {
+  transform: rotate(180deg);
+}
+
+.panel-enter {
+  animation: panel-in var(--duration-base) var(--ease-out) both;
+}
+.panel-enter--back {
+  animation-name: panel-in-back;
+}
+
+/* Indicador deslizante de pestañas y barra inferior */
+.glider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  transition: transform var(--duration-base) var(--ease-pop);
+}
+.glider--nav {
+  border-radius: var(--radius-card);
+  background: var(--color-leaf-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Esqueletos, numerales y detalles vivos
+-------------------------------------------------------------------------- */
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-paper-deep);
+  border-radius: 0.75rem;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  animation: shimmer 1.4s var(--ease-in-out) infinite;
+}
+html.night .skeleton::after {
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.08), transparent);
+}
+
+.bar {
+  position: relative;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--color-paper-deep);
+  overflow: hidden;
+}
+.bar__fill {
+  height: 100%;
+  border-radius: 999px;
+  transform-origin: left center;
+  animation: grow-x 900ms var(--ease-out) both;
+}
+
+.sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-line);
+  background: var(--color-card);
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-card);
+}
+.sticker--citrus {
+  border-color: transparent;
+  background: var(--color-citrus-soft);
+  color: var(--color-citrus);
+}
+.sticker--leaf {
+  border-color: transparent;
+  background: var(--color-leaf-soft);
+  color: var(--color-leaf-deep);
+}
+
+.marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.marquee__track {
+  display: flex;
+  gap: 1.5rem;
+  width: max-content;
+  animation: marquee 38s linear infinite;
+}
+
+.spark {
+  position: absolute;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  pointer-events: none;
+  animation: spark 620ms var(--ease-out) both;
+}
+
+.pulse-soft {
+  animation: pulse-soft 2.6s var(--ease-in-out) infinite;
+}
+
+.float-slow {
+  animation: float-slow var(--duration-drift) var(--ease-in-out) infinite alternate;
+}
+
+.tilt-left {
+  transform: rotate(-1.4deg);
+}
+.tilt-right {
+  transform: rotate(1.2deg);
+}
+
+/* Campos: halo de foco discreto y sin depender del color */
+.field {
+  transition:
+    border-color var(--duration-quick) var(--ease-out),
+    box-shadow var(--duration-quick) var(--ease-out),
+    background-color var(--duration-quick) var(--ease-out);
+}
+.field:hover:not(:disabled) {
+  border-color: var(--color-line-strong);
+}
+.field:focus,
+.field:focus-visible {
+  outline: none;
+  border-color: var(--color-leaf);
+  box-shadow: 0 0 0 3px rgb(47 107 69 / 0.18);
+}
+.field[aria-invalid="true"] {
+  border-color: var(--color-berry);
+  box-shadow: 0 0 0 3px rgb(163 52 79 / 0.18);
+}
+
+/* Interruptor */
+.knob {
+  transition: transform var(--duration-base) var(--ease-pop);
+}
+.switch-track {
+  transition:
+    background-color var(--duration-base) var(--ease-out),
+    box-shadow var(--duration-base) var(--ease-out);
+}
+
+/* --------------------------------------------------------------------------
+   Animaciones
+-------------------------------------------------------------------------- */
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
-    filter: blur(4px);
+    transform: translateY(14px);
+    filter: blur(5px);
   }
   to {
     opacity: 1;
@@ -69,17 +602,186 @@ html.night {
   }
 }
 
-.tap {
-  transition:
-    scale 150ms ease-out,
-    background-color 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease;
-}
-.tap:active:not(:disabled) {
-  scale: 0.96;
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.knob {
-  transition: transform 200ms ease-out;
+@keyframes panel-in-back {
+  from {
+    opacity: 0;
+    transform: translateX(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes sheen {
+  from {
+    opacity: 0.9;
+    transform: translateX(-60%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(60%);
+  }
+}
+
+@keyframes shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes float-slow {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(2rem, 1.4rem, 0) scale(1.08);
+  }
+}
+
+@keyframes spark {
+  from {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.4);
+  }
+  to {
+    opacity: 0;
+    transform: translate(var(--spark-x, 0), var(--spark-y, -1.4rem)) scale(1);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes shake-soft {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+.shake {
+  animation: shake-soft 180ms var(--ease-in-out) 2;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rise {
+    animation: rise 460ms var(--ease-out) both;
+  }
+  .rise-2 {
+    animation-delay: 70ms;
+  }
+  .rise-3 {
+    animation-delay: 140ms;
+  }
+  .rise-4 {
+    animation-delay: 210ms;
+  }
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Movimiento reducido: se apaga lo decorativo, se conserva todo lo usable
+-------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .rise,
+  .panel-enter,
+  .skeleton::after,
+  .bar__fill,
+  .marquee__track,
+  .pulse-soft,
+  .float-slow,
+  .spark {
+    animation: none !important;
+  }
+  .marquee__track {
+    flex-wrap: wrap;
+    width: auto;
+  }
+  .market-backdrop__blob {
+    animation: none !important;
+  }
+  .glider,
+  .knob,
+  .reveal__surface,
+  .collapsible,
+  .disclosure__chevron,
+  [data-toast] {
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+  }
+  .market-backdrop {
+    opacity: 0.55;
+  }
+  .sheen::after {
+    display: none;
+  }
+  .press:active:not(:disabled, [aria-disabled="true"]),
+  .tap:active:not(:disabled, [aria-disabled="true"]) {
+    transform: none;
+    box-shadow: var(--shadow-press);
+  }
+}
+
+/* En táctil el hover no existe: se mantiene el hundimiento del toque */
+@media (hover: none) {
+  .lift:hover {
+    transform: none;
+  }
 }

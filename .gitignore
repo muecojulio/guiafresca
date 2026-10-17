@@ -4,6 +4,7 @@ node_modules
 artifacts
 screenshots
 dist
+.tanstack
 .output
 *.log
 .env
