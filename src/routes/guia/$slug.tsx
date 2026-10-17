@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ChevronLeft } from "lucide-react";
 import { getGuide, PLACE_LABEL, SOURCES } from "@/lib/catalog";
+import { fmtRango, verificacionDe } from "@/lib/verificacion";
 import { nutricionDe, type Nutricion } from "@/lib/fruta.functions";
 import { Shell } from "@/components/shell";
 import { SaveButton } from "@/components/ui";
@@ -45,6 +46,7 @@ function Detail() {
     );
   }
 
+  const verif = verificacionDe(item.slug);
   const days = [
     { label: "Fuera", value: item.counter },
     { label: "Refrigerador", value: item.fridge },
@@ -150,6 +152,29 @@ function Detail() {
               <Nutri k="Carbohidratos" v={`${fmt(nutri.carbohydrates)} g`} />
               <Nutri k="Proteína" v={`${fmt(nutri.protein)} g`} />
             </dl>
+          </section>
+        ) : null}
+
+        {verif ? (
+          <section>
+            <h2 className="font-display text-3xl">Cómo se comprobó</h2>
+            <div className="mt-4 space-y-2 rounded-card border border-line bg-card px-4 py-3">
+              <p className="text-base leading-relaxed">
+                {verif.tabla === "Criterio de la guía"
+                  ? "Criterio de la guía. No hay una cifra comparable en las tablas consultadas."
+                  : `Fuente: ${verif.tabla}${verif.fila ? `, fila “${verif.fila}”` : ""}.`}
+              </p>
+              {verif.refri ? (
+                <p className="text-sm leading-relaxed text-stone">Refrigerador: {fmtRango(verif.refri)}.</p>
+              ) : null}
+              {verif.fuera ? (
+                <p className="text-sm leading-relaxed text-stone">Fuera del refrigerador: {fmtRango(verif.fuera)}.</p>
+              ) : null}
+              {verif.excepcion ? (
+                <p className="text-sm leading-relaxed text-stone">Excepción: {verif.excepcion}</p>
+              ) : null}
+              <p className="text-sm leading-relaxed text-stone">{verif.nota}</p>
+            </div>
           </section>
         ) : null}
 
